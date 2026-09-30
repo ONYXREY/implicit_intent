@@ -12,8 +12,10 @@ import android.provider.CalendarContract
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -37,6 +39,9 @@ class MainActivity : AppCompatActivity() {
         val _etURL = findViewById<EditText>(R.id.etURL)
         val btnOpenURL = findViewById<Button>(R.id.btnOpenURL)
         val btnSetEvent = findViewById<Button>(R.id.btnSetEvent)
+        val btnGetPhoto = findViewById<Button>(R.id.btnGetPhoto)
+        val _ivHasil = findViewById<ImageView>(R.id.ivHasil)
+
 
 
         btnKirimPesan.setOnClickListener {
@@ -136,6 +141,22 @@ class MainActivity : AppCompatActivity() {
                 }, year,month,day)
 
             datePickerDialog.show()
+
         }
+
+        val cameraLauncher = registerForActivityResult(
+            ActivityResultContracts.TakePicturePreview()
+        ) { bitmap ->
+            if (bitmap != null){
+                _ivHasil.setImageBitmap(bitmap)
+            }
+        }
+
+        btnGetPhoto.setOnClickListener {
+            cameraLauncher.launch(null)
+        }
+
+
+
     }
 }
